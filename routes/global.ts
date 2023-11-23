@@ -7,7 +7,7 @@ const router = Router();
 
 router.get('/settings', async (req, res) => {
   try {
-    const tags = await Tag.find().select({ id: true, content: true, bgColor: true });
+    const tags = await Tag.find().select({ id: true, content: true, bgColor: true, _id: false });
 
     return res.json({ success: true, tags });
   } catch (error) {
@@ -16,37 +16,37 @@ router.get('/settings', async (req, res) => {
   }
 });
 
-router.post('/settings', async (req, res) => {
-  try {
-    const TAGS: Omit<ITag, 'id'>[] = [
-      { content: 'Pending for test', bgColor: '#1CEF00' },
-      { content: 'Testing', bgColor: '#B148E1' },
-      { content: 'Lunched', bgColor: '#335145' },
-      { content: 'Waiting for client', bgColor: '#4B3ACC' },
-      { content: 'Todo', bgColor: '#CC3A3A' },
-    ];
+// router.post('/settings', async (req, res) => {
+//   try {
+//     const TAGS: Omit<ITag, 'id'>[] = [
+//       { content: 'Pending for test', bgColor: '#1CEF00' },
+//       { content: 'Testing', bgColor: '#B148E1' },
+//       { content: 'Lunched', bgColor: '#335145' },
+//       { content: 'Waiting for client', bgColor: '#4B3ACC' },
+//       { content: 'Todo', bgColor: '#CC3A3A' },
+//     ];
 
-    for (const { content, bgColor } of TAGS) {
-      const DBTag = new Tag({ content, bgColor });
-      await DBTag.save();
-    }
+//     for (const { content, bgColor } of TAGS) {
+//       const DBTag = new Tag({ content, bgColor });
+//       await DBTag.save();
+//     }
 
-    return res.json({ success: true });
-  } catch (error) {
-    logError(error);
-    return res.json({ success: false, error });
-  }
-});
+//     return res.json({ success: true });
+//   } catch (error) {
+//     logError(error);
+//     return res.json({ success: false, error });
+//   }
+// });
 
-router.delete('/settings', async (req, res) => {
-  try {
-    await Tag.deleteMany();
+// router.delete('/settings', async (req, res) => {
+//   try {
+//     await Tag.deleteMany();
 
-    return res.json({ success: true });
-  } catch (error) {
-    logError(error);
-    return res.json({ success: false, error });
-  }
-});
+//     return res.json({ success: true });
+//   } catch (error) {
+//     logError(error);
+//     return res.json({ success: false, error });
+//   }
+// });
 
 export { router as GlobalRouter };
