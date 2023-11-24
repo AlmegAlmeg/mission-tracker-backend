@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
-import { IUser } from "../models/User";
-import { v4 as uuid } from "uuid";
+import { Schema, model } from 'mongoose';
+import { IUser } from '../models/User';
+import { v4 as uuid } from 'uuid';
 
 const UserSchema = new Schema<IUser>({
   id: {
@@ -27,8 +27,14 @@ const UserSchema = new Schema<IUser>({
 
   avatar: {
     type: String,
-    required: true,
   },
+
+  timeLogs: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'TimeLog',
+    },
+  ],
 });
 
-export const User = model("User", UserSchema);
+export const User = model('User', UserSchema);

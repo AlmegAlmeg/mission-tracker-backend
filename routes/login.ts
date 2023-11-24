@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
     return res.json({ success: true, token });
   } catch (error) {
     logError(error);
-    return res.json({ success: false, error });
+    return res.json({ success: false, error: JSON.stringify(error) });
   }
 });
 
@@ -45,7 +45,7 @@ router.post('/register', async function (req, res) {
     return res.json({ success: true });
   } catch (error) {
     logError(error);
-    return res.json({ success: false, error });
+    return res.json({ success: false, error: JSON.stringify(error) });
   }
 });
 

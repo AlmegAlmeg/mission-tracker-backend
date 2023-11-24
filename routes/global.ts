@@ -8,8 +8,9 @@ const router = Router();
 router.get('/settings', async (req, res) => {
   try {
     const tags = await Tag.find().select({ id: true, content: true, bgColor: true, _id: false });
+    const backgroundColors = tags.map((t) => t.bgColor);
 
-    return res.json({ success: true, tags });
+    return res.json({ success: true, tags, backgroundColors });
   } catch (error) {
     logError(error);
     return res.json({ success: false, error });

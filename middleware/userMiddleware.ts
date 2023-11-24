@@ -1,0 +1,30 @@
+import { NextFunction, Request, Response } from 'express';
+
+import jwt from 'jsonwebtoken';
+import { User } from '../db/User';
+import { logError } from '../utils/consoleMessage';
+
+export default async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let { token } = req.headers;
+    if (!token) throw 'Request must contain a token';
+
+    const email = jwt.decode(token.toString());
+    if (email === null) throw 'Unauthenticated';
+
+    const users = await User.find({ email }).select({
+      firstName: true,
+      lastName: true,
+      isAdmin: true,
+      email: true,
+    });
+
+    if (!users.length) throw 'Unauthenticated';
+
+    req.currentUser = users[0];
+    next();
+  } catch (error) {
+    logError(`${error}`);
+    return res.status(403).json({ status: false, error });
+  }
+};
