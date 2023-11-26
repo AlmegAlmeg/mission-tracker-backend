@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { IUser } from '../models/User';
 import { v4 as uuid } from 'uuid';
+import { Avatars } from './Avatar';
 
 const UserSchema = new Schema<IUser>({
   id: {
@@ -27,6 +28,15 @@ const UserSchema = new Schema<IUser>({
 
   avatar: {
     type: String,
+    required: true,
+    default: Avatars[0],
+  },
+
+  role: {
+    type: String,
+    required: true,
+    enum: ['Admin', 'Moderator', 'Developer', 'Project Manager'],
+    default: 'Developer',
   },
 
   timeLogs: [

@@ -15,8 +15,10 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     const users = await User.find({ email }).select({
       firstName: true,
       lastName: true,
-      isAdmin: true,
       email: true,
+      timeLogs: true,
+      avatar: true,
+      role: true,
     });
 
     if (!users.length) throw 'Unauthenticated';
@@ -25,6 +27,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     next();
   } catch (error) {
     logError(`${error}`);
-    return res.status(403).json({ status: false, error });
+    return res.status(403).json({ success: false, error });
   }
 };

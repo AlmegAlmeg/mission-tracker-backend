@@ -8,6 +8,6 @@ export interface IMission {
   description?: string;
   estimation?: number;
   logs: ITimeLog[];
-  tags: ITag[];
+  tag?: ITag;
   assignedTo?: IUser;
 }

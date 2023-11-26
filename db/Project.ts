@@ -14,15 +14,65 @@ const ProjectSchema = new Schema<IProject>({
     required: true,
   },
 
+  slug: {
+    type: String,
+    unique: true,
+  },
+
   collections: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'Collection',
+      id: {
+        type: String,
+        required: true,
+        default: uuid(),
+      },
+
+      title: {
+        type: String,
+        required: true,
+      },
+
+      missions: [
+        {
+          id: {
+            type: String,
+            required: true,
+            default: uuid(),
+          },
+
+          title: {
+            type: String,
+            required: true,
+          },
+
+          description: String,
+
+          estimation: Number,
+
+          logs: [
+            {
+              type: Schema.Types.ObjectId,
+              ref: 'TimeLog',
+            },
+          ],
+
+          assignedTo: {
+            type: Schema.Types.ObjectId || undefined,
+            ref: 'User',
+          },
+
+          tag: {
+            type: Schema.Types.ObjectId || undefined,
+            ref: 'Tag',
+          },
+        },
+      ],
     },
   ],
 });
 
 ProjectSchema.pre('save', function () {
+  this.slug = this.name.toLowerCase().replaceAll('- ', '').replaceAll(' ', '-');
   this.collections.push({ id: uuid(), title: 'Completed', missions: [] });
 });
 
