@@ -31,11 +31,25 @@ router.post('/settings', async (req, res) => {
           {
             id: uuid(),
             title: 'Development',
-            missions: [{ id: uuid(), title: 'useFetch custom hook', logs: [] }],
+            missions: [{ id: uuid(), title: 'useFetch custom hook', logs: [], estimation: 1200 }],
           },
         ],
       },
-      { id: uuid(), name: 'Hamevakrim', collections: [] },
+      {
+        id: uuid(),
+        name: 'Hamevakrim',
+        collections: [
+          {
+            id: uuid(),
+            title: 'Frontend',
+            missions: [
+              { id: uuid(), title: 'Review page', logs: [], estimation: 1200 },
+              { id: uuid(), title: 'Single review page', logs: [], estimation: 450 },
+              { id: uuid(), title: 'Filtering and sorting', logs: [], estimation: 900 },
+            ],
+          },
+        ],
+      },
       { id: uuid(), name: 'Todo App - Support', collections: [] },
       { id: uuid(), name: 'Template Research', collections: [] },
     ];
