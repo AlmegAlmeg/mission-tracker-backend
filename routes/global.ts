@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { logError } from '../utils/consoleMessage';
 import { Tag } from '../db/Tag';
-import { ITag } from '../models/Tag';
 import { Avatars } from '../db/Avatar';
 import { IProject } from '../models/Project';
 import { v4 as uuid } from 'uuid';
 import { Project } from '../db/Project';
+import { Collection } from '../db/Collection';
+import { Mission } from '../db/Mission';
 
 const router = Router();
 
@@ -24,39 +25,29 @@ router.get('/settings', async (req, res) => {
 router.post('/settings', async (req, res) => {
   try {
     const projects: IProject[] = [
-      {
-        id: uuid(),
-        name: 'Albeer',
-        collections: [
-          {
-            id: uuid(),
-            title: 'Development',
-            missions: [{ id: uuid(), title: 'useFetch custom hook', logs: [], estimation: 1200 }],
-          },
-        ],
-      },
-      {
-        id: uuid(),
-        name: 'Hamevakrim',
-        collections: [
-          {
-            id: uuid(),
-            title: 'Frontend',
-            missions: [
-              { id: uuid(), title: 'Review page', logs: [], estimation: 1200 },
-              { id: uuid(), title: 'Single review page', logs: [], estimation: 450 },
-              { id: uuid(), title: 'Filtering and sorting', logs: [], estimation: 900 },
-            ],
-          },
-        ],
-      },
+      { id: uuid(), name: 'Albeer', collections: [] },
+      { id: uuid(), name: 'Hamevakrim', collections: [] },
       { id: uuid(), name: 'Todo App - Support', collections: [] },
       { id: uuid(), name: 'Template Research', collections: [] },
     ];
 
     for (const project of projects) {
-      const proj = new Project(project);
+      const proj = new Project({
+        id: uuid(),
+        name: project.name,
+        slug: project.name.toLowerCase().replaceAll('- ', '').replaceAll(' ', '-'),
+        collections: [],
+      });
+      
+      const collection = new Collection({
+        id: uuid(),
+        title: 'Completed',
+        missions: [],
+        project: proj._id,
+      });
+      
       await proj.save();
+      await collection.save();
     }
 
     return res.json({ success: true });
@@ -69,6 +60,8 @@ router.post('/settings', async (req, res) => {
 router.delete('/settings', async (req, res) => {
   try {
     await Project.deleteMany();
+    await Collection.deleteMany();
+    await Mission.deleteMany();
 
     return res.json({ success: true });
   } catch (error) {

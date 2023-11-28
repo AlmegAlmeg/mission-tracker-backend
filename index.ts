@@ -11,6 +11,7 @@ import { TimeLogRouter } from './routes/timeLogs';
 
 /* Middleware */
 import userMiddleware from './middleware/userMiddleware';
+import { CollectionsRouter } from './routes/collection';
 
 const PORT = 3333;
 const app = express();
@@ -27,5 +28,6 @@ app.use(cors());
 app.use('/', LoginRouter);
 app.use('/', GlobalRouter);
 app.use('/projects', ProjectsRouter);
+app.use('/collections', CollectionsRouter);
 app.use('/user', userMiddleware, UserRouter);
 app.use('/time-log', userMiddleware, TimeLogRouter);

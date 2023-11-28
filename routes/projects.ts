@@ -12,7 +12,7 @@ const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const projects = await Project.find().select(projectQuery);
+    const projects = await Project.find().select(projectQuery).populate('collections').exec();
 
     return res.json({ success: true, projects });
   } catch (error) {
@@ -47,21 +47,21 @@ router.post('/', userMiddleware, async (req, res) => {
     const slug = name.toLowerCase().replaceAll('- ', '').replaceAll(' ', '-');
 
     const existingProject = await Project.findOne({ slug });
-    if(existingProject) throw 'Project already exists';
+    if (existingProject) throw 'Project already exists';
 
     const project = new Project({
       id: uuid(),
       name,
       slug,
     });
-    
+
     const collection = new Collection({
       id: uuid(),
       title: 'Completed',
       missions: [],
       project: project._id,
     });
-    
+
     await project.save();
     await collection.save();
 
