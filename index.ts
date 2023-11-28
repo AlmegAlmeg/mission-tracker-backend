@@ -2,12 +2,15 @@ import express from 'express';
 import cors from 'cors';
 import { connectToDatabase } from './db/connection';
 
+/* Routers */
 import { LoginRouter } from './routes/login';
 import { GlobalRouter } from './routes/global';
 import { UserRouter } from './routes/user';
-
-import userMiddleware from './middleware/userMiddleware';
 import { ProjectsRouter } from './routes/projects';
+import { TimeLogRouter } from './routes/timeLogs';
+
+/* Middleware */
+import userMiddleware from './middleware/userMiddleware';
 
 const PORT = 3333;
 const app = express();
@@ -25,3 +28,4 @@ app.use('/', LoginRouter);
 app.use('/', GlobalRouter);
 app.use('/projects', ProjectsRouter);
 app.use('/user', userMiddleware, UserRouter);
+app.use('/time-log', userMiddleware, TimeLogRouter);
