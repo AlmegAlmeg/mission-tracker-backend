@@ -20,10 +20,12 @@ const TagSchema = new Schema<ITimeLog>({
     required: true,
     default: Date.now(),
   },
+  
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
+
   tag: {
     type: Schema.Types.ObjectId,
     ref: 'Tag',

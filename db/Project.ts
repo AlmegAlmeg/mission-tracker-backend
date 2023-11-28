@@ -16,64 +16,20 @@ const ProjectSchema = new Schema<IProject>({
 
   slug: {
     type: String,
+    required: true,
     unique: true,
   },
 
   collections: [
     {
-      id: {
-        type: String,
-        required: true,
-        default: uuid(),
-      },
-
-      title: {
-        type: String,
-        required: true,
-      },
-
-      missions: [
-        {
-          id: {
-            type: String,
-            required: true,
-            default: uuid(),
-          },
-
-          title: {
-            type: String,
-            required: true,
-          },
-
-          description: String,
-
-          estimation: Number,
-
-          logs: [
-            {
-              type: Schema.Types.ObjectId,
-              ref: 'TimeLog',
-            },
-          ],
-
-          assignedTo: {
-            type: Schema.Types.ObjectId || undefined,
-            ref: 'User',
-          },
-
-          tag: {
-            type: Schema.Types.ObjectId || undefined,
-            ref: 'Tag',
-          },
-        },
-      ],
+      type: Schema.Types.ObjectId,
+      ref: 'Collection',
     },
   ],
 });
 
-ProjectSchema.pre('save', function () {
-  this.slug = this.name.toLowerCase().replaceAll('- ', '').replaceAll(' ', '-');
-  this.collections.push({ id: uuid(), title: 'Completed', missions: [] });
-});
+// ProjectSchema.pre('save', function () {
+//   this.slug = this.name.toLowerCase().replaceAll('- ', '').replaceAll(' ', '-');
+// });
 
 export const Project = model('Project', ProjectSchema);

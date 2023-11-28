@@ -1,4 +1,5 @@
 import z from "zod";
+import { IProject } from "../models/Project";
 
 export const loginSchema = z.object({
   email: z.string().email(),
@@ -9,6 +10,10 @@ export const registerSchema = z.object({
   lastName: z.string().min(2).max(10),
   email: z.string().email(),
   avatar: z.string().optional(),
+});
+
+export const projectSchema = z.object({
+  name: z.string().min(2).max(10),
 });
 
 export const tagSchema = z.object({
