@@ -25,7 +25,10 @@ router.get('/:slug', async (req, res) => {
     const { slug } = req.params;
     if (!slug) throw 'Slug is required';
 
-    const project = await Project.findOne({ slug }).select(projectQuery);
+    const project = await Project.findOne({ slug })
+      .select(projectQuery)
+      .populate({ path: 'lists', populate: 'missions' })
+      .exec();
 
     if (project === null) throw 'No project found';
 
