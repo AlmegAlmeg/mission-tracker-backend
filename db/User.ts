@@ -1,9 +1,8 @@
 import { Schema, model } from 'mongoose';
-import { IUser } from '../models/User';
 import { v4 as uuid } from 'uuid';
 import { Avatars } from './Avatar';
 
-const UserSchema = new Schema<IUser>({
+const UserSchema = new Schema({
   id: {
     type: String,
     required: true,

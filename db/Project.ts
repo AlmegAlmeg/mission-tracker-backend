@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { v4 as uuid } from 'uuid';
-import { IProject } from '../models/Project';
+import { List } from './List';
 
-const ProjectSchema = new Schema<IProject>({
+const ProjectSchema = new Schema({
   id: {
     type: String,
     required: true,
@@ -20,16 +20,18 @@ const ProjectSchema = new Schema<IProject>({
     unique: true,
   },
 
-  collections: [
+  lists: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Collection',
+      ref: 'List',
     },
   ],
 });
 
-// ProjectSchema.pre('save', function () {
-//   this.slug = this.name.toLowerCase().replaceAll('- ', '').replaceAll(' ', '-');
-// });
+ProjectSchema.pre('save', async function () {
+  const list = new List({ title: 'Completed', missions: [], project: this._id, id: uuid() });
+  await list.save();
+  this.lists.push(list._id);
+});
 
 export const Project = model('Project', ProjectSchema);

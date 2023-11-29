@@ -25,8 +25,9 @@ const MissionSchema = new Schema({
   ],
 
   assignedTo: {
-    type: Schema.Types.ObjectId || undefined,
+    type: Schema.Types.ObjectId || null,
     ref: 'User',
+    default: null,
   },
 
   tags: {
@@ -34,14 +35,16 @@ const MissionSchema = new Schema({
     ref: 'Tag',
   },
 
-  collection: {
+  list: {
     type: Schema.Types.ObjectId,
-    ref: 'Collection',
+    ref: 'List',
+    required: true,
   },
 
   project: {
     type: Schema.Types.ObjectId,
     ref: 'Project',
+    required: true,
   },
 });
 

@@ -1,8 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { ITag } from '../models/Tag';
 import { v4 as uuid } from 'uuid';
 
-const TagSchema = new Schema<ITag>({
+const TagSchema = new Schema({
   id: {
     type: String,
     required: true,

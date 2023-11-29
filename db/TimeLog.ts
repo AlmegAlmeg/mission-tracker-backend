@@ -1,8 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { v4 as uuid } from 'uuid';
-import { ITimeLog } from '../models/TimeLog';
 
-const TagSchema = new Schema<ITimeLog>({
+const TimeLogSchema = new Schema({
   id: {
     type: String,
     required: true,
@@ -15,21 +14,22 @@ const TagSchema = new Schema<ITimeLog>({
     default: 0,
   },
 
+  description: {
+    type: String,
+    required: true,
+  },
+
   createdAt: {
     type: Date,
     required: true,
     default: Date.now(),
   },
-  
+
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-  },
-
-  tag: {
-    type: Schema.Types.ObjectId,
-    ref: 'Tag',
+    required: true,
   },
 });
 
-export const Tag = model('Tag', TagSchema);
+export const TimeLog = model('TimeLog', TimeLogSchema);

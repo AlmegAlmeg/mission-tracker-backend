@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { v4 as uuid } from 'uuid';
 
-const CollectionSchema = new Schema({
+const ListSchema = new Schema({
   id: {
     type: String,
     required: true,
@@ -26,4 +26,4 @@ const CollectionSchema = new Schema({
   },
 });
 
-export const Collection = model('Collection', CollectionSchema);
+export const List = model('List', ListSchema);

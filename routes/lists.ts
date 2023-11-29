@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import { logError } from '../utils/consoleMessage';
-import { Collection } from '../db/Collection';
+import { List } from '../db/List';
 
 const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const projects = await Collection.find();
+    const projects = await List.find();
 
     return res.json({ success: true, projects });
   } catch (error) {
@@ -15,4 +15,4 @@ router.get('/', async (req, res) => {
   }
 });
 
-export { router as CollectionsRouter };
+export { router as ListsRouter };

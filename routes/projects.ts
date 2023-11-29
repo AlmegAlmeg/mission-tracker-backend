@@ -5,14 +5,13 @@ import { projectQuery } from '../utils/queries';
 import { projectSchema } from '../utils/validations';
 import { parseErrors } from '../utils/parseErrors';
 import { v4 as uuid } from 'uuid';
-import { Collection } from '../db/Collection';
 import userMiddleware from '../middleware/userMiddleware';
 
 const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const projects = await Project.find().select(projectQuery).populate('collections').exec();
+    const projects = await Project.find().select(projectQuery).populate('lists').exec();
 
     return res.json({ success: true, projects });
   } catch (error) {
@@ -55,15 +54,7 @@ router.post('/', userMiddleware, async (req, res) => {
       slug,
     });
 
-    const collection = new Collection({
-      id: uuid(),
-      title: 'Completed',
-      missions: [],
-      project: project._id,
-    });
-
     await project.save();
-    await collection.save();
 
     return res.json({ success: true, project });
   } catch (error) {

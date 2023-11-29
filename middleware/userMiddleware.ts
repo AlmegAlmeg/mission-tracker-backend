@@ -13,6 +13,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     if (email === null) throw 'Unauthenticated';
 
     const users = await User.find({ email }).select({
+      _id: true,
+      id: true,
       firstName: true,
       lastName: true,
       email: true,
