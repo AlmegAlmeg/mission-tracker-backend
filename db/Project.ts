@@ -29,6 +29,7 @@ const ProjectSchema = new Schema({
 });
 
 ProjectSchema.pre('save', async function () {
+  if (this.lists.length > 0) return;
   const list = new List({ title: 'Completed', missions: [], project: this._id, id: uuid() });
   await list.save();
   this.lists.push(list._id);
