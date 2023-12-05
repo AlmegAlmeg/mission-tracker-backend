@@ -18,6 +18,13 @@ export function listHandler(socket: Socket) {
     const project = await getProjectBySlug(slug);
     socket.emit(SOCKET_MAP.GET_PROJECT_BY_SLUG, project);
   });
+
+  /* Update list */
+  socket.on(SOCKET_MAP.UPDATE_LIST, async (listId: string, body: { title: string }) => {
+    await updateList(listId, body);
+
+    socket.emit(SOCKET_MAP.GET_PROJECT_BY_SLUG, await getProjectBySlug(body.title));
+  });
 }
 
 async function createList(slug: string, body: { title: string }) {
@@ -38,15 +45,15 @@ async function createList(slug: string, body: { title: string }) {
   }
 }
 
-// router.get('/', async (req, res) => {
-//   try {
-//     const projects = await List.find();
+async function updateList(listId: string, body: { title: string }) {
+  try {
+    const response = listSchema.safeParse(body);
+    if (!response.success) throw parseErrors(response.error);
 
-//     return res.json({ success: true, projects });
-//   } catch (error) {
-//     logError(error);
-//     return res.json({ success: false, error: JSON.stringify(error) });
-//   }
-// });
+    await List.findOneAndUpdate({ id: listId }, { title: response.data.title });
+  } catch (error) {
+    logError(error);
+  }
+}
 
 export { router as ListsRouter };
