@@ -19,6 +19,11 @@ const TimeLogSchema = new Schema({
     required: true,
   },
 
+  date: {
+    type: Date,
+    required: true,
+  },
+
   createdAt: {
     type: Date,
     required: true,

@@ -13,17 +13,37 @@ import { getProjectBySlug } from './projects';
 import { User } from '../db/User';
 
 const router = Router();
-
+ 
 export function missionHandler(socket: Socket) {
+  /* Get mission by id */  
+  socket.on(SOCKET_MAP.GET_MISSION_BY_ID, async (id: string) => {
+    const mission = await getMissionById(id);
+    if(!mission) return null;
+
+    socket.emit(SOCKET_MAP.GET_MISSION_BY_ID, mission);
+  });
+
   socket.on(
     SOCKET_MAP.CREATE_MISSION,
     async (listId: string, body: z.infer<typeof missionSchema>) => {
       const projectSlug = await createMission(listId, body);
       if (!projectSlug) return;
 
-      socket.emit(SOCKET_MAP.GET_PROJECT_BY_SLUG, getProjectBySlug(projectSlug));
+      socket.emit(SOCKET_MAP.GET_PROJECT_BY_SLUG, await getProjectBySlug(projectSlug));
     }
   );
+}
+
+async function getMissionById(id: string) {
+  try {
+    const mission = await Mission.findOne({ id }).populate('assignedTo').populate('tags');
+    if (!mission) throw 'Mission not found';
+
+    return mission
+  } catch (error) {
+    logError(error);
+    return null
+  }
 }
 
 async function createMission(listId: string, body: z.infer<typeof missionSchema>) {

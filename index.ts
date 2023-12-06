@@ -39,7 +39,7 @@ app.use('/user', userMiddleware, UserRouter);
 app.use('/time-logs', TimeLogRouter);
 
 io.on('connection', (socket) => {
-  projectsHandler(socket);
+  projectsHandler(socket,io);
   listHandler(socket);
   missionHandler(socket);
 });

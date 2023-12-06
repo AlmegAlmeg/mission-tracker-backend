@@ -2,12 +2,16 @@ import { Router } from 'express';
 import { logError } from '../utils/consoleMessage';
 import { Project } from '../db/Project';
 import { projectQuery } from '../utils/queries';
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { SOCKET_MAP } from '../config/socketMap';
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 
 const router = Router();
 
-export async function projectsHandler(socket: Socket) {
+export async function projectsHandler(
+  socket: Socket,
+  io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
+) {
   /* All projects */
   socket.on(SOCKET_MAP.GET_ALL_PROJECTS, async () => {
     const projects = await getAllProjects();
@@ -23,7 +27,10 @@ export async function projectsHandler(socket: Socket) {
 
 export async function getAllProjects() {
   try {
-    const projects = await Project.find().select(projectQuery).populate('lists').exec();
+    const projects = await Project.find()
+      .select(projectQuery)
+      .populate({ path: 'lists', populate: { path: 'missions' } })
+      .exec();
 
     return projects;
   } catch (error) {
@@ -34,7 +41,10 @@ export async function getAllProjects() {
 
 export async function getProjectBySlug(slug: string) {
   try {
-    const project = await Project.findOne({ slug }).select(projectQuery).populate('lists').exec();
+    const project = await Project.findOne({ slug })
+      .select(projectQuery)
+      .populate({ path: 'lists', populate: { path: 'missions', populate: { path: 'assignedTo' } } })
+      .exec();
     if (project === null) throw 'No project found';
 
     return project;
