@@ -5,7 +5,7 @@ const TimeLogSchema = new Schema({
   id: {
     type: String,
     required: true,
-    default: uuid(),
+    default: () => uuid(),
   },
 
   time: {

@@ -13,7 +13,7 @@ import { ListsRouter, listHandler } from './routes/lists';
 
 /* Middleware */
 import userMiddleware from './middleware/userMiddleware';
-import { MissionsRouter } from './routes/mission';
+import { MissionsRouter, missionHandler } from './routes/mission';
 import { Server } from 'socket.io';
 
 const PORT = 3333;
@@ -41,4 +41,5 @@ app.use('/time-logs', TimeLogRouter);
 io.on('connection', (socket) => {
   projectsHandler(socket);
   listHandler(socket);
+  missionHandler(socket);
 });

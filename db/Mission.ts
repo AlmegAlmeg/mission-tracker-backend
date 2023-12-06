@@ -5,7 +5,7 @@ const MissionSchema = new Schema({
   id: {
     type: String,
     required: true,
-    default: uuid(),
+    default: () => uuid(),
   },
 
   title: {

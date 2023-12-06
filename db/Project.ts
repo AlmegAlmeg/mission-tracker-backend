@@ -6,7 +6,7 @@ const ProjectSchema = new Schema({
   id: {
     type: String,
     required: true,
-    default: uuid(),
+    default: () => uuid(),
   },
 
   name: {

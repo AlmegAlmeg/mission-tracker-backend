@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { Project } from '../db/Project';
 import { Mission } from '../db/Mission';
 import { List } from '../db/List';
+import { User } from '../db/User';
 
 const router = Router();
 
@@ -15,6 +16,25 @@ router.get('/settings', async (req, res) => {
     const backgroundColors = tags.map((t) => t.bgColor);
 
     return res.json({ success: true, tags, backgroundColors, avatars: [...Avatars] });
+  } catch (error) {
+    logError(error);
+    return res.json({ success: false, error });
+  }
+});
+
+router.get('/users', async (req, res) => {
+  try {
+    const users = await User.find().select({
+      id: true,
+      firstName: true,
+      lastName: true,
+      avatar: true,
+      email: true,
+      role: true,
+      _id: false,
+    });
+
+    return res.json({ success: true, users });
   } catch (error) {
     logError(error);
     return res.json({ success: false, error });

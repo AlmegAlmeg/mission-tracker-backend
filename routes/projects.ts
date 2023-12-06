@@ -21,7 +21,7 @@ export async function projectsHandler(socket: Socket) {
   });
 }
 
-async function getAllProjects() {
+export async function getAllProjects() {
   try {
     const projects = await Project.find().select(projectQuery).populate('lists').exec();
 

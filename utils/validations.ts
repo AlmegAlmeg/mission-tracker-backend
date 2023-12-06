@@ -34,3 +34,10 @@ export const listSchema = z.object({
   assignedTo: z.string().optional(),
   tags: z.array(z.string()).optional(),
 });
+
+export const missionSchema = z.object({
+  title: z.string(),
+  description: z.string().optional(),
+  estimation: z.number().optional(),
+  assignedTo: z.string().optional(),
+});

@@ -20,11 +20,14 @@ export function listHandler(socket: Socket) {
   });
 
   /* Update list */
-  socket.on(SOCKET_MAP.UPDATE_LIST, async (listId: string, body: { title: string }) => {
-    await updateList(listId, body);
+  socket.on(
+    SOCKET_MAP.UPDATE_LIST,
+    async (projectSlug: string, listId: string, body: { title: string }) => {
+      await updateList(listId, body);
 
-    socket.emit(SOCKET_MAP.GET_PROJECT_BY_SLUG, await getProjectBySlug(body.title));
-  });
+      socket.broadcast.emit(SOCKET_MAP.GET_PROJECT_BY_SLUG, await getProjectBySlug(projectSlug));
+    }
+  );
 }
 
 async function createList(slug: string, body: { title: string }) {
